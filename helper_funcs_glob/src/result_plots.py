@@ -69,7 +69,7 @@ def result_plots(plot_opts: dict,
         ax.set_aspect("equal", "datalim")
         plt.xlabel("east in m")
         plt.ylabel("north in m")
-        plt.show()
+        #plt.show()
 
     if plot_opts["raceline_curv"]:
         # plot curvature profile
@@ -78,7 +78,7 @@ def result_plots(plot_opts: dict,
         plt.grid()
         plt.xlabel("distance in m")
         plt.ylabel("curvature in rad/m")
-        plt.show()
+        #plt.show()
 
     if plot_opts["racetraj_vel_3d"]:
         scale_x = 1.0
@@ -134,7 +134,7 @@ def result_plots(plot_opts: dict,
             # increment index
             cur_ind += ind_stepsize
 
-        plt.show()
+        #plt.show()
 
     if plot_opts["spline_normals"]:
         plt.figure()
@@ -150,8 +150,9 @@ def result_plots(plot_opts: dict,
         plt.xlabel("east in m")
         plt.ylabel("north in m")
 
-        plt.show()
-
+        #plt.show()
+        
+    plt.show()
 
 # testing --------------------------------------------------------------------------------------------------------------
 if __name__ == "__main__":
