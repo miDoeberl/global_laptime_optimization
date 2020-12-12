@@ -24,14 +24,12 @@ t2.join()
 from multiprocessing import Process
 import main_globaltraj
 
-def f(x):
-    return x * x
 
-def run_sim(opt_type: str, plot: bool):
-        main_globaltraj.run(opt_type, plot)
+def run_sim(opt_type: str, plot: bool, params_file: str):
+        main_globaltraj.run(opt_type, plot, params_file)
 
-p1 = Process(target=run_sim, args=('mincurv', True))
-p2 = Process(target=run_sim, args=('mintime', True))
+p1 = Process(target=run_sim, args=('mincurv', True, "racecar.ini"))
+p2 = Process(target=run_sim, args=('mintime', True, "racecar.ini"))
 
 
 p1.start()

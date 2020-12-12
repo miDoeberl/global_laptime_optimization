@@ -19,13 +19,13 @@ This script has to be executed to generate an optimal trajectory based on a give
 """
 
 
-def run(opt_type, plot: bool):
+def run(opt_type: str, plot: bool, params_file: str):
     # ----------------------------------------------------------------------------------------------------------------------
     # USER INPUT -----------------------------------------------------------------------------------------------------------
     # ----------------------------------------------------------------------------------------------------------------------
 
     # choose vehicle parameter file ----------------------------------------------------------------------------------------
-    file_paths = {"veh_params_file": "racecar.ini"}
+    file_paths = {"veh_params_file": params_file}
 
     # debug and plot options -----------------------------------------------------------------------------------------------
     debug = True  # print console messages
@@ -596,4 +596,4 @@ def run(opt_type, plot: bool):
         trajectory=trajectory_opt,
     )
 
-#run("mintime", True)
+#run('mincurv', True, "racecar.ini")
