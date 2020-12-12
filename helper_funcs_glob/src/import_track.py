@@ -8,13 +8,13 @@ def import_track(file_path: str,
     Created by:
     Alexander Heilmeier
     Modified by:
-    Thomas Herrmann
+    Thomas Herrmann, Michael Döberl
 
     Documentation:
     This function includes the algorithm part connected to the import of the track.
 
     Inputs:
-    file_path:      file path of track.csv containing [x_m,y_m,w_tr_right_m,w_tr_left_m]
+    file_path:      file path of track.csv containing [x_m,y_m,w_tr_right_m,w_tr_left_m], FOR IMPORT FROM ROS INPUT 'rosnode' !
     imp_opts:       import options showing if a new starting point should be set or if the direction should be reversed
     width_veh:      vehicle width required to check against track width
 
@@ -22,8 +22,14 @@ def import_track(file_path: str,
     reftrack_imp:   imported track [x_m, y_m, w_tr_right_m, w_tr_left_m]
     """
 
-    # load data from csv file
-    csv_data_temp = np.loadtxt(file_path, comments='#', delimiter=',')
+    if file_path.endswith('rosnode.csv'):
+        "TODO: Insert ROS code here!"
+        #csv_data_temp = get data from ros
+        #csv_data_temp: shape(N, 4) -> als np matrix einlesen
+        pass
+    else:
+        # load data from csv file
+        csv_data_temp = np.loadtxt(file_path, comments='#', delimiter=',')
 
     # get coords and track widths out of array
     if np.shape(csv_data_temp)[1] == 3:

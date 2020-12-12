@@ -13,6 +13,8 @@ import helper_funcs_glob
 """
 Created by:
 Alexander Heilmeier
+Modified by:
+Michael Döberl
 
 Documentation:
 This script has to be executed to generate an optimal trajectory based on a given reference track.
@@ -47,6 +49,7 @@ def run(opt_type: str, plot: bool, params_file: str):
     # file_paths["track_name"] = "berlin_2018"                                    # Berlin Formula E 2018
     # file_paths["track_name"] = "modena_2019"                                    # Modena 2019
     file_paths["track_name"] = "test_track"
+    #file_paths["track_name"] = "rosnode"
 
     # set import options ---------------------------------------------------------------------------------------------------
     imp_opts = {
@@ -596,4 +599,4 @@ def run(opt_type: str, plot: bool, params_file: str):
         trajectory=trajectory_opt,
     )
 
-#run('mincurv', True, "racecar.ini")
+run('mincurv', True, "racecar.ini")
