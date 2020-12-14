@@ -21,7 +21,7 @@ This script has to be executed to generate an optimal trajectory based on a give
 """
 
 
-def run(opt_type: str, plot: bool, params_file: str):
+def run(returnQueue, opt_type: str, plot: bool, params_file: str):
     # ----------------------------------------------------------------------------------------------------------------------
     # USER INPUT -----------------------------------------------------------------------------------------------------------
     # ----------------------------------------------------------------------------------------------------------------------
@@ -552,6 +552,11 @@ def run(opt_type: str, plot: bool, params_file: str):
     # EXPORT ---------------------------------------------------------------------------------------------------------------
     # ----------------------------------------------------------------------------------------------------------------------
 
+    #Export race trajectory to passed queue
+    returnQueue.put(traj_race_cl)
+    #Debug
+    #queue.put("This is my return value from " + opt_type)
+
     # export race trajectory  to CSV
     if "traj_race_export" in file_paths.keys():
         helper_funcs_glob.src.export_traj_race.export_traj_race(file_paths=file_paths, traj_race=traj_race_cl)
@@ -599,4 +604,4 @@ def run(opt_type: str, plot: bool, params_file: str):
         trajectory=trajectory_opt,
     )
 
-run('mincurv', True, "racecar.ini")
+#run('mintime', True, "racecar.ini")
