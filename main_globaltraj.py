@@ -21,7 +21,7 @@ This script has to be executed to generate an optimal trajectory based on a give
 """
 
 
-def run(returnQueue, opt_type: str, plot: bool, params_file: str):
+def run(returnQueue, track: str, opt_type: str, plot: bool, params_file: str):
     # ----------------------------------------------------------------------------------------------------------------------
     # USER INPUT -----------------------------------------------------------------------------------------------------------
     # ----------------------------------------------------------------------------------------------------------------------
@@ -48,8 +48,9 @@ def run(returnQueue, opt_type: str, plot: bool, params_file: str):
     # file_paths["track_name"] = "handling_track"                                 # artificial track
     # file_paths["track_name"] = "berlin_2018"                                    # Berlin Formula E 2018
     # file_paths["track_name"] = "modena_2019"                                    # Modena 2019
-    file_paths["track_name"] = "test_track"
+    #file_paths["track_name"] = "test_track"
     #file_paths["track_name"] = "rosnode"
+    file_paths["track_name"] = track
 
     # set import options ---------------------------------------------------------------------------------------------------
     imp_opts = {

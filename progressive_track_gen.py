@@ -24,13 +24,23 @@ t2.join()
 from multiprocessing import Process, Queue
 import main_globaltraj
 
+# Values in queue:
+# s_m: curvilinear distance along race line
+# x_m: x coordinate
+# y_m y coordinate
+# psi_rad: Heading of raceline in current point, 0 is north
+# kappa_radpm: curvature of raceline in current point
+# vx_mps: target velocity
+# ax_mps2: target acceleration from current point until next point
 Q = Queue()
 
-def run_sim(queue, opt_type: str, plot: bool, params_file: str):
-        main_globaltraj.run(queue, opt_type, plot, params_file)
 
-p1 = Process(target=run_sim, args=(Q, 'mincurv', False, "racecar.ini"))
-p2 = Process(target=run_sim, args=(Q, 'mintime', False, "racecar.ini"))
+def run_sim(queue, track: str, opt_type: str, plot: bool, params_file: str):
+    main_globaltraj.run(queue, track, opt_type, plot, params_file)
+
+#myProcess = Process(target=run_sim, args=(returnQueue, "track_name/rosnode", "opt_type", plot?, "car init file"))
+p1 = Process(target=run_sim, args=(Q, "test_track", "mincurv", True, "racecar.ini"))
+p2 = Process(target=run_sim, args=(Q, "test_track", "mintime", True, "racecar.ini"))
 
 
 p1.start()
