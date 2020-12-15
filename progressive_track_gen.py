@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Multithreading does not seem to work. 
 Runtime doubles even though two seperate threads are spawned.
@@ -23,6 +24,38 @@ t2.join()
 
 from multiprocessing import Process, Queue
 import main_globaltraj
+import rospy
+from driverless_msgs.msg import pt, ptArray
+
+def init_rosnode():
+    "Returns publisher object"
+    rospy.init_node("opt_track_publisher")
+    pub = rospy.Publisher("/track_pts", ptArray, queue_size=10)
+    return pub
+
+def publish(pub, trackMatrix):
+    "Publishes returnQueue Matrix to ROS publisher pub"
+    trackPointArr = []
+    for i in range(0, len(trackMatrix[:,0])):
+        line = trackMatrix[i,:]
+        point = pt()
+        point.s_m = line[0]
+        point.x_m = line[1]
+        point.y_m = line[2]
+        point.psi_rad = line[3]
+        point.kappa_radpm = line[4]
+        point.vx_mps = line[5]
+        point.ax_mps2 = line[6]
+        trackPointArr.append(point)
+
+    pubArr = ptArray(ptArray=trackPointArr)
+
+
+    while pub.get_num_connections() < 1:
+        pass
+
+    pointArr = ptArray(ptArray=trackPointArr)
+    pub.publish(pointArr)
 
 # Values in queue:
 # s_m: curvilinear distance along race line
@@ -34,19 +67,23 @@ import main_globaltraj
 # ax_mps2: target acceleration from current point until next point
 Q = Queue()
 
-
 def run_sim(queue, track: str, opt_type: str, plot: bool, params_file: str):
     main_globaltraj.run(queue, track, opt_type, plot, params_file)
 
 #myProcess = Process(target=run_sim, args=(returnQueue, "track_name/rosnode", "opt_type", plot?, "car init file"))
-p1 = Process(target=run_sim, args=(Q, "test_track", "mincurv", True, "racecar.ini"))
-p2 = Process(target=run_sim, args=(Q, "test_track", "mintime", True, "racecar.ini"))
+p1 = Process(target=run_sim, args=(Q, "test_track", "mincurv", False, "racecar.ini"))
+p2 = Process(target=run_sim, args=(Q, "test_track", "mintime", False, "racecar.ini"))
 
 
 p1.start()
 p2.start()
 
 p1.join()
-print(Q.get())
+
+pub = init_rosnode()
+trackMatrix = Q.get()
+publish(pub, trackMatrix)
+
 p2.join()
-print(Q.get())
+trackMatrix = Q.get()
+publish(pub, trackMatrix)
