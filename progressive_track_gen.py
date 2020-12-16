@@ -25,12 +25,12 @@ t2.join()
 from multiprocessing import Process, Queue
 import main_globaltraj
 import rospy
-from driverless_msgs.msg import pt, ptArray
+from driverless_msgs.msg import OptimizedTrackPoint, OptimizedTrackArray
 
 def init_rosnode():
     "Returns publisher object"
     rospy.init_node("opt_track_publisher")
-    pub = rospy.Publisher("/track_pts", ptArray, queue_size=10)
+    pub = rospy.Publisher("/track_pts", OptimizedTrackArray, queue_size=10)
     return pub
 
 def publish(pub, trackMatrix):
@@ -38,7 +38,7 @@ def publish(pub, trackMatrix):
     trackPointArr = []
     for i in range(0, len(trackMatrix[:,0])):
         line = trackMatrix[i,:]
-        point = pt()
+        point = OptimizedTrackPoint()
         point.s_m = line[0]
         point.x_m = line[1]
         point.y_m = line[2]
@@ -48,13 +48,13 @@ def publish(pub, trackMatrix):
         point.ax_mps2 = line[6]
         trackPointArr.append(point)
 
-    pubArr = ptArray(ptArray=trackPointArr)
+    pubArr = OptimizedTrackArray(optArray=trackPointArr)
 
 
     while pub.get_num_connections() < 1:
         pass
 
-    pointArr = ptArray(ptArray=trackPointArr)
+    pointArr = OptimizedTrackArray(optArray=trackPointArr)
     pub.publish(pointArr)
 
 # Values in queue:
@@ -71,19 +71,19 @@ def run_sim(queue, track: str, opt_type: str, plot: bool, params_file: str):
     main_globaltraj.run(queue, track, opt_type, plot, params_file)
 
 #myProcess = Process(target=run_sim, args=(returnQueue, "track_name/rosnode", "opt_type", plot?, "car init file"))
-p1 = Process(target=run_sim, args=(Q, "test_track", "mincurv", False, "racecar.ini"))
-p2 = Process(target=run_sim, args=(Q, "test_track", "mintime", False, "racecar.ini"))
+p1 = Process(target=run_sim, args=(Q, "rosnode", "mincurv", False, "racecar.ini"))
+#p2 = Process(target=run_sim, args=(Q, "test_track", "mintime", False, "racecar.ini"))
 
 
 p1.start()
-p2.start()
+#p2.start()
 
 p1.join()
 
 pub = init_rosnode()
 trackMatrix = Q.get()
-publish(pub, trackMatrix)
+#publish(pub, trackMatrix)
 
-p2.join()
-trackMatrix = Q.get()
-publish(pub, trackMatrix)
+#p2.join()
+#trackMatrix = Q.get()
+#publish(pub, trackMatrix)

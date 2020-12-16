@@ -1,4 +1,6 @@
 import numpy as np
+import rospy
+from driverless_msgs.msg import pt, ptArray
 
 
 def import_track(file_path: str,
@@ -27,7 +29,18 @@ def import_track(file_path: str,
         #message type from dynamics git repo
         #csv_data_temp = get data from ros
         #csv_data_temp: shape(N, 4) -> als np matrix einlesen
-        pass
+
+        rospy.init_node('laptime_optimization', anonymous=True)
+        sub = rospy.Subscriber('/global_cones', ptArray)
+        data = rospy.wait_for_message("/global_cones", ptArray)
+        sub.unregister()
+        csv_data_temp = np.zeros((len(data.ptArray), 4))
+        for i in range(len(data.ptArray)):
+            csv_data_temp[i][0] = float(data.ptArray[i].x) / 1000
+            csv_data_temp[i][1] = float(data.ptArray[i].y) / 1000
+            csv_data_temp[i][2] = float(data.ptArray[i].w_r) / 1000
+            csv_data_temp[i][3] = float(data.ptArray[i].w_l) / 1000
+        
     else:
         # load data from csv file
         csv_data_temp = np.loadtxt(file_path, comments='#', delimiter=',')
