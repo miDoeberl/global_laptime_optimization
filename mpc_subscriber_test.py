@@ -8,7 +8,7 @@ def callback(data):
 
 def listener():
     rospy.init_node('MPC', anonymous=True)
-    rospy.Subscriber('/global_cones', OptimizedTrackArray, callback)
+    rospy.Subscriber('/idealline_velocity', OptimizedTrackArray, callback)
     rospy.spin()
 
 if __name__ == '__main__':

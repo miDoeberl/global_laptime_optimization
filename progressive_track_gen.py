@@ -30,7 +30,7 @@ from driverless_msgs.msg import OptimizedTrackPoint, OptimizedTrackArray
 def init_rosnode():
     "Returns publisher object"
     rospy.init_node("opt_track_publisher")
-    pub = rospy.Publisher("/track_pts", OptimizedTrackArray, queue_size=10)
+    pub = rospy.Publisher("/idealline_velocity", OptimizedTrackArray, queue_size=10)
     return pub
 
 def publish(pub, trackMatrix):
@@ -39,16 +39,16 @@ def publish(pub, trackMatrix):
     for i in range(0, len(trackMatrix[:,0])):
         line = trackMatrix[i,:]
         point = OptimizedTrackPoint()
-        point.s_m = line[0]
-        point.x_m = line[1]
-        point.y_m = line[2]
+        point.s_mm = int(line[0] * 1000)
+        point.x_mm = int(line[1] * 1000)
+        point.y_mm = int(line[2] * 1000)
         point.psi_rad = line[3]
         point.kappa_radpm = line[4]
         point.vx_mps = line[5]
         point.ax_mps2 = line[6]
         trackPointArr.append(point)
 
-    pubArr = OptimizedTrackArray(optArray=trackPointArr)
+    #pubArr = OptimizedTrackArray(optArray=trackPointArr)
 
 
     while pub.get_num_connections() < 1:
@@ -82,7 +82,7 @@ p1.join()
 
 pub = init_rosnode()
 trackMatrix = Q.get()
-#publish(pub, trackMatrix)
+publish(pub, trackMatrix)
 
 #p2.join()
 #trackMatrix = Q.get()
