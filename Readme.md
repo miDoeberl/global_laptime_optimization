@@ -1,3 +1,12 @@
+# How to run
+* `Step 1:` Follow install instructions further down
+* `Step 2:` Set desired input parameters in file progressive_track_gen.py
+* `Step 3:` (if rosnode) Start mpc_subscriber_test.py to see the output
+* `Step 4:` (if rosnode) Start progressive_track_gen.py
+* `Step 5:` (if rosnode) Start track_publisher_debug.py (as often as the number of processes in progressive_track_gen.py
+* `Step 3:` (if NOT rosnode) Start progressive_track_gen.py
+
+
 # Introduction
 This repository contains algorithms that allow us to determine an optimal racing line on a race track. You can chose
 between several objectives:
