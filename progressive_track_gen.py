@@ -70,20 +70,20 @@ Q = Queue()
 def run_sim(queue, track: str, opt_type: str, plot: bool, params_file: str):
     main_globaltraj.run(queue, track, opt_type, plot, params_file)
 
-#myProcess = Process(target=run_sim, args=(returnQueue, "track_name/rosnode", "opt_type", plot?, "car init file"))
-p1 = Process(target=run_sim, args=(Q, "rosnode", "mincurv", False, "racecar.ini"))
-#p2 = Process(target=run_sim, args=(Q, "test_track", "mintime", False, "racecar.ini"))
+#myProcess = Process(target=run_sim, args=(returnQueue, "track_name or rosnode", "opt_type", plot?, "car init file"))
+p1 = Process(target=run_sim, args=(Q, "test_track", "mincurv", False, "racecar.ini"))
+p2 = Process(target=run_sim, args=(Q, "test_track", "mintime", False, "racecar.ini"))
 
 
 p1.start()
-#p2.start()
-
-p1.join()
+p2.start()
 
 pub = init_rosnode()
+
+p1.join()
 trackMatrix = Q.get()
 publish(pub, trackMatrix)
 
-#p2.join()
-#trackMatrix = Q.get()
-#publish(pub, trackMatrix)
+p2.join()
+trackMatrix = Q.get()
+publish(pub, trackMatrix)

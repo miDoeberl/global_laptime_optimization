@@ -25,10 +25,6 @@ def import_track(file_path: str,
     """
 
     if file_path.endswith('rosnode.csv'):
-        "TODO: Insert ROS code here!"
-        #message type from dynamics git repo
-        #csv_data_temp = get data from ros
-        #csv_data_temp: shape(N, 4) -> als np matrix einlesen
 
         rospy.init_node('laptime_optimization', anonymous=True)
         sub = rospy.Subscriber('/global_cones', ptArray)
